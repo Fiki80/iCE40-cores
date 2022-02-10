@@ -4,19 +4,19 @@ module spi_flash(
 
 	// SPI interface
 	output wire spi_clk,
-	input wire spi_cs,
+	input  wire spi_cs,
 	output wire spi_mosi,
-	input wire spi_miso,
+	input  wire spi_miso,
 
 	// Control interface
-	input wire [23:0] addr,
-	input wire [13:0] byte_count,
-	input wire start,
-	output reg rdy,
+	input  wire [23:0] addr,
+	input  wire [13:0] byte_count,
+	input  wire start,
+	output reg  rdy,
 
 	// Data interface
 	output wire [7:0] data,
-	output reg data_valid
+	output reg data_rdy
 );
 
 	localparam IDLE			= 2'b00;
@@ -24,7 +24,7 @@ module spi_flash(
 	localparam READ_DATA	= 2'b10;
 
 	// State registers
-	reg [1:0] cur_state, nxt_state;
+	reg [1:0]  cur_state, nxt_state;
 
 	// Store byte count
 	reg [13:0] byte_count_tmp;
@@ -33,7 +33,7 @@ module spi_flash(
 	reg [31:0] shift_reg;
 
 	// Bit and byte counter registers
-	reg [2:0] cnt_bit;
+	reg [2:0]  cnt_bit;
 	reg [14:0] cnt_byte;
 
 	// Signal last bit and byte
@@ -108,7 +108,7 @@ module spi_flash(
 
 	// Capture SPI data
 	always @(posedge clk)
-		data_valid <= (cur_state == READ_DATA) & last_bit;
+		data_rdy <= (cur_state == READ_DATA) & last_bit;
 
 	assign data = shift_reg[7:0];
 

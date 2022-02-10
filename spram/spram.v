@@ -17,11 +17,11 @@ module spram8(
 
 	reg nib_sel;
 
-	wire read_sel = !cs_n & !oe_n & we_n;
-	wire write_sel = !cs_n & oe_n & !we_n;
+	wire read  = !oe_n && !cs_n;
+	wire write = !we_n && !cs_n;
 	
 	// Multiplexers
-	assign data_out = read_sel ? (nib_sel ? dout[7:0] : dout[15:8]) : 8'b0;
+	assign data_out = read ? (nib_sel ? dout[7:0] : dout[15:8]) : 8'b0;
 	assign maskwren = addr[14] ? 4'b0011 : 4'b1100;
 
 
@@ -36,7 +36,7 @@ module spram8(
 		.ADDRESS(addr[13:0]),
 		.DATAIN({data_in, data_in}),
 		.MASKWREN(maskwren),
-		.WREN(write_sel),
+		.WREN(write),
 		.CHIPSELECT(~cs_n),
 		.CLOCK(clk),
 		.STANDBY(1'b0),

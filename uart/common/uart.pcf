@@ -1,0 +1,7 @@
+# CLK
+set_io clk12	35
+
+# UART
+set_io TXD		6
+set_io RXD		4
+

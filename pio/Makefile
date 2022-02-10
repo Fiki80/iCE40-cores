@@ -1,4 +1,4 @@
-NAME = spi_flash
+NAME = pio
 #GFLAGS = -S gtkwave.tcl
 
 
@@ -10,7 +10,7 @@ $(NAME).vcd: $(NAME).vvp
 	vvp $<
 
 $(NAME).vvp: $(NAME)_tb.v
-	iverilog -Wall -Wno-timescale -DNO_ICE40_DEFAULT_ASSIGNMENTS -o $@ $(NAME).v $(NAME)_tb.v -l $$(yosys-config --datdir/ice40/cells_sim.v)
+	iverilog -Wall -DNO_ICE40_DEFAULT_ASSIGNMENTS -o $@ $(NAME).v $(NAME)_tb.v -l $$(yosys-config --datdir/ice40/cells_sim.v)
 
 .PHONY: clean
 clean:
